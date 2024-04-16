@@ -1,0 +1,23 @@
+{
+  "name": "futhub",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.19",
+    "next": "14.2.1",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.1",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
+  }
+}
