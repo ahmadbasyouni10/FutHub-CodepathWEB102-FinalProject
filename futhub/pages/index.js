@@ -1,16 +1,17 @@
+import Card from "../components/Card";
+import Sidebar from "../components/Sidebar";
+import PostForm from "../components/PostForm";
+import PostCard from "../components/PostCard";
+
 export default function Home() {
   return (
-    <div className="flex mt-4 mx-auto max-w-4xl border-4 border-emerald-500">
-      <div className="w-1/3">
-        <div className="border border-black">
-          links
-        </div>
+    <div className="flex mt-4 mx-auto max-w-4xl gap-5">
+      <div className="w-1/4">
+        <Sidebar />
       </div>
-      <div className="">
-        <div className="border border-black">
-          form
-        </div>
-        post
+      <div className="w-3/4">
+        <PostForm />
+        <PostCard />
       </div>
     </div>
   );
