@@ -3,17 +3,45 @@ import Card from "./Card";
 import { BiUpvote } from "react-icons/bi";
 import { FaRegComment } from "react-icons/fa";
 import { FaRegShareFromSquare } from "react-icons/fa6";
+import { IoImageOutline } from "react-icons/io5";
+import { IoIosMore } from "react-icons/io";
+import { useState } from "react";
+import { CiEdit } from "react-icons/ci";
+import { MdOutlineReport } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
+
+
+
+
 
 const PostCard = () => {
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    const handleDropdown = () => {
+        setShowDropdown(!showDropdown);
+    }
+
     return (
         <Card>
             <div className="flex gap-3">
                 <div className="">
                     <Avatar />
                 </div>
-                <div className="">
+                <div className="grow">
                     <h2 className=""><a className="font-semibold">John Doe</a> shared a <a className="text-blue-500">post</a></h2>
                     <p className="text-gray-500">3 hours ago</p>
+                </div>
+                <div>
+                    <button className="text-gray-400 text-2xl" onClick={handleDropdown}><IoIosMore /></button>
+                    <div className="relative">
+                        {showDropdown && (
+                        <div className="absolute -right-7 bg-white p-3 rounded-sm border border-gray-100 w-40">
+                            <a href="" className="items-center gap-3 flex py-2"><CiEdit /> Edit</a>
+                            <a href="" className="items-center gap-3 flex py-2"><MdDeleteOutline /> Delete</a>
+                            <a href="" className="items-center gap-3 flex py-2"><MdOutlineReport /> Report</a>
+                        </div>
+                    )}
+                    </div>
                 </div>
             </div>
             <div>
@@ -22,10 +50,19 @@ const PostCard = () => {
                     <img src="https://static.independent.co.uk/2024/04/16/22/CAMPEONES_BARCELONA-PSG_93788.jpg" alt="Post"></img>
                 </div>
             </div>
-            <div className='flex gap-2 mt-2'>
-                <button className="text-gray-500 font-semibold flex gap-1 items-center"><BiUpvote /> Upvote</button>
-                <button className="text-gray-500 font-semibold flex gap-1 items-center"><FaRegComment /> Comment </button>
+            <div className='flex gap-3 mt-2'>
+                <button className="text-gray-500 font-semibold flex gap-1 items-center"><BiUpvote /> 23</button>
+                <button className="text-gray-500 font-semibold flex gap-1 items-center"><FaRegComment /> 4 </button>
                 <button className="text-gray-500 font-semibold flex gap-1 items-center"><FaRegShareFromSquare /> Repost</button>
+            </div>
+            <div className="flex mt-4 gap-3">
+                <div>
+                    <Avatar />
+                </div>
+                <div className="grow rounded-full relative">
+                    <textarea className="border block p-3 overflow-hidden px-4 h-12 rounded-full w-full" placeholder="Comment..."></textarea>
+                    <button className="absolute top-3 right-4 text-2xl"><IoImageOutline /></button>
+                </div>
             </div>
         </Card>
     );
