@@ -1,18 +1,33 @@
-import Card from "../components/Card";
-import Sidebar from "../components/Sidebar";
-import PostForm from "../components/PostForm";
-import PostCard from "../components/PostCard";
+import Layout from "@/components/Layout";
+import PostForm from "@/components/PostForm";
+import PostCard from "@/components/PostCard";
+import { supabase } from "../client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+
 
 export default function Home() {
-  return (
-    <div className="flex mt-4 mx-auto max-w-4xl gap-5">
-      <div className="w-1/4">
-        <Sidebar />
-      </div>
-      <div className="w-3/4">
+    const [session, setSession] = useState(null);
+    const router = useRouter();
+
+    useEffect(() => {
+      const fetchSession = async () => {
+        const {data: { session },
+        } = await supabase.auth.getSession()
+        setSession(session);
+      if (!session) {
+        router.push("/login");
+      }
+    };
+    fetchSession();
+    }, [session]);
+    console.log(session)
+
+    return (
+      <Layout>
         <PostForm />
         <PostCard />
-      </div>
-    </div>
-  );
-}
+      </Layout>
+    );
+  }
