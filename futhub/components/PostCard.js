@@ -9,6 +9,7 @@ import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineReport } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
+import Link from "next/link";
 
 
 
@@ -22,14 +23,23 @@ const PostCard = () => {
     }
 
     return (
-        <Card>
+        <Card Padding={true}>
             <div className="flex gap-3">
-                <div className="">
-                    <Avatar />
+                <div className="cursor-pointer">
+                    <Link href="/profile">
+                        <span className="cursor-pointer">
+                            <Avatar big={false} />
+                        </span>
+                    </Link>
                 </div>
                 <div className="grow">
-                    <h2 className=""><a className="font-semibold">John Doe</a> shared a <a className="text-blue-500">post</a></h2>
-                    <p className="text-gray-500">3 hours ago</p>
+                    <h2 className="">
+                        <Link href="/profile">
+                            <span className="cursor-pointer hover:underline font-semibold mr-1">John Doe</span>
+                        </Link>
+                        shared a <a className="text-green-500">post</a>
+                        <p className="text-gray-500">3 hours ago</p>
+                    </h2>
                 </div>
                 <div>
                     <button className="text-gray-400 text-2xl" onClick={handleDropdown}><IoIosMore /></button>
@@ -51,9 +61,9 @@ const PostCard = () => {
                 </div>
             </div>
             <div className='flex gap-3 mt-2'>
-                <button className="text-gray-500 font-semibold flex gap-1 items-center"><BiUpvote /> 23</button>
-                <button className="text-gray-500 font-semibold flex gap-1 items-center"><FaRegComment /> 4 </button>
-                <button className="text-gray-500 font-semibold flex gap-1 items-center"><FaRegShareFromSquare /> Repost</button>
+                <button className="hover:bg-green-200 hover:scale-110 hover:bg-opacity-50 hover:shadow-md text-gray-500 font-semibold flex gap-1 items-center"><BiUpvote /> 23</button>
+                <button className="hover:bg-green-200 hover:scale-110 hover:bg-opacity-50 hover:shadow-md text-gray-500 font-semibold flex gap-1 items-center"><FaRegComment /> 4 </button>
+                <button className="hover:bg-green-200 hover:scale-110 hover:bg-opacity-50 hover:shadow-md text-gray-500 font-semibold flex gap-1 items-center"><FaRegShareFromSquare /> Repost</button>
             </div>
             <div className="flex mt-4 gap-3">
                 <div>
