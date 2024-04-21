@@ -5,11 +5,15 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors:{
         AppBg:'#F5F5FB',
-        Appblue:'21fa86'
+        AppBlue:'21fa86',
+        'dark': '#232A3C',  
+        'medium': '#293245',
+
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

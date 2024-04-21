@@ -22,6 +22,11 @@ body {
 
 }
 
+.dark body {
+  color: white;
+  background-color: #1A202C;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

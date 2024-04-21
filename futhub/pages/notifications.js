@@ -11,21 +11,21 @@ const Notifications = () => {
                 <Card Padding={true}>
                         <h2 className='text-3xl mb-2'></h2>
                         <div className='gap-3'>
-                            <div className='flex items-center py-2 mb-5 border-b-4 border-green-500'>
+                            <div className='flex items-center pb-4 py-2 mb-5 border-b-2 border-teal-500'>
                                 <Avatar />
-                                <h3 className='px-3 flex text-center'><div className='font-bold mr-1'>Katherine</div> liked your <Link href={''} className='text-green-500 hover:underline ml-1'>post</Link></h3>
+                                <h3 className='px-3 flex text-center'><div className='font-bold mr-1'>Katherine</div> liked your <Link href={''} className='text-teal-500 hover:underline ml-1'>post</Link></h3>
                             </div>
-                            <div className='flex py-2 mb-5 items-center border-b-4 border-green-500'>
+                            <div className='flex py-2 pb-4 mb-5 items-center border-b-2 border-teal-500'>
                                 <Avatar />
-                                <h3 className='px-3 flex text-center'><div className='font-bold mr-1'>Katherine</div> liked your <Link href={''} className='text-green-500 hover:underline ml-1'>post</Link></h3>
+                                <h3 className='px-3 flex text-center'><div className='font-bold mr-1'>Katherine</div> liked your <Link href={''} className='text-teal-500 hover:underline ml-1'>post</Link></h3>
                             </div>
-                            <div className='flex py-2 mb-5 items-center border-b-4 border-green-500'>
+                            <div className='flex py-2 pb-4 mb-5 items-center border-b-2 border-teal-500'>
                                 <Avatar />
-                                <h3 className='px-3 flex text-center'><div className='font-bold mr-1'>Katherine</div> liked your <Link href={''} className='text-green-500 hover:underline ml-1'>post</Link></h3>
+                                <h3 className='px-3 flex text-center'><div className='font-bold mr-1'>Katherine</div> liked your <Link href={''} className='text-teal-500 hover:underline ml-1'>post</Link></h3>
                             </div>
-                            <div className='flex py-2 mb-5 items-center border-b-4 border-green-500'>
+                            <div className='flex py-2 pb-4  mb-5 items-center border-b-2 border-teal-500'>
                                 <Avatar />
-                                <h3 className='px-3 flex text-center'><div className='font-bold mr-1'>Katherine</div> liked your <Link href={''} className='text-green-500 hover:underline ml-1'>post</Link></h3>
+                                <h3 className='px-3 flex text-center'><div className='font-bold mr-1'>Katherine</div> liked your <Link href={''} className='text-teal-500 hover:underline ml-1'>post</Link></h3>
                             </div>
                         </div>
                     </Card>

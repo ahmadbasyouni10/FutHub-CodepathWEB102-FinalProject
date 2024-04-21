@@ -17,7 +17,7 @@ const ProfilePage = () => {
     const isPosts = currentpath.includes('posts') || currentpath === '/profile';
     const isAbout = currentpath.includes('about');
     const isFriends = currentpath.includes('friends');
-    const activeItemStyles = 'text-green-500 font-bold border-b-4 border-b-green-400';
+    const activeItemStyles = 'text-teal-500 font-bold border-b-4 border-b-teal-400';
 
     return (
         <Layout>
@@ -38,9 +38,9 @@ const ProfilePage = () => {
                                 Madrid, Spain
                             </div>
                             <div className='flex mt-8'>
-                                <Link href='/profile/posts' className={`${isPosts ? activeItemStyles : 'hover:bg-green-200'} items-center flex mt-2 px-3 rounded gap-1 `}><IoDocumentTextOutline /> Posts</Link>
-                                <Link href='/profile/about' className={`${isAbout ? activeItemStyles : 'hover:bg-green-200'} items-center flex mt-2 px-3 rounded gap-1`}><TbFriends /> About</Link>
-                                <Link href='/profile/friends' className={`${isFriends ? activeItemStyles : 'hover:bg-green-200'} items-center flex mt-2 px-3 rounded gap-1`}><IoMdInformationCircleOutline /> Friends</Link>
+                                <Link href='/profile/posts' className={`${isPosts ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1 `}><IoDocumentTextOutline /> Posts</Link>
+                                <Link href='/profile/about' className={`${isAbout ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1`}><TbFriends /> About</Link>
+                                <Link href='/profile/friends' className={`${isFriends ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1`}><IoMdInformationCircleOutline /> Friends</Link>
                             </div>
                         </div>
                     </div>

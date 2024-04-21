@@ -4,6 +4,7 @@ import PostCard from "@/components/PostCard";
 import { supabase } from "../client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Search from "@/components/Search";
 
 
 
@@ -21,12 +22,12 @@ export default function Home() {
       }
     };
     fetchSession();
-    }, [session]);
-    console.log(session)
+    }, []);
 
     return (
       <Layout>
         <PostForm />
+        <Search />
         <PostCard />
       </Layout>
     );
