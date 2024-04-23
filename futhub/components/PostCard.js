@@ -10,38 +10,35 @@ import { CiEdit } from "react-icons/ci";
 import { MdOutlineReport } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import Link from "next/link";
-import { useSessionData } from "../hooks/useSessionData";
+import { formatDistanceToNow } from 'date-fns';
 
 
-
-
-
-const PostCard = () => {
+const PostCard = ({postcontent, photos, created_at, users:user}) => {
     const [showDropdown, setShowDropdown] = useState(false);
 
     const handleDropdown = () => {
         setShowDropdown(!showDropdown);
     }
 
-    const { pfp, nameuser} = useSessionData();
+    const timeAgo = formatDistanceToNow(new Date(created_at), {addSuffix: true});
 
     return (
         <Card Padding={true}>
             <div className="flex gap-3">
                 <div className="cursor-pointer">
-                    <Link href="/profile">
+                    <Link href={"/profile/"+user.id}>
                         <span className="cursor-pointer">
-                            <Avatar url={pfp} big={false} />
+                            <Avatar url={user?.picture} big={false} />
                         </span>
                     </Link>
                 </div>
                 <div className="grow">
                     <h2 className="">
-                        <Link href="/profile">
-                            <span className="cursor-pointer hover:underline font-semibold mr-1">{nameuser}</span>
+                        <Link href={"/profile/"+user.id}>
+                            <span className="cursor-pointer hover:underline font-semibold mr-1">{user?.name}</span>
                         </Link>
                         shared a <a className="text-teal-500">post</a>
-                        <p className="text-gray-500 dark:text-gray-400">3 hours ago</p>
+                        <p className="text-gray-500 dark:text-gray-400">{timeAgo}</p>
                     </h2>
                 </div>
                 <div>
@@ -58,20 +55,33 @@ const PostCard = () => {
                 </div>
             </div>
             <div>
-                <p className="my-3 text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptate.</p>
-                <div className=" rounded-md overflow-hidden">
-                    <img src="https://static.independent.co.uk/2024/04/16/22/CAMPEONES_BARCELONA-PSG_93788.jpg" alt="Post"></img>
+                <p className="my-3 text-sm">{postcontent}</p>
+                {photos?.length > 1 ? (
+                <div className="flex gap-4">
+                        {photos.map((photo, index) => (
+                            <div className="rounded-md overflow-hidden">
+                                <img key={index} src={photo} alt="Post" className="w-full h-96 object-cover" />
+                            </div>
+                        ))}
                 </div>
+                ): (
+                    <div className="rounded-md overflow-hidden">
+                        <img className="w-full object-cover" src={photos[0]}></img>
+                    </div>
+                )}
             </div>
+                
             <div className='flex gap-3 mt-2'>
                 <button className="hover:bg-teal-200 hover:scale-110 hover:bg-opacity-50 hover:shadow-md text-gray-500 font-semibold flex gap-1 dark:text-gray-400 items-center"><BiUpvote /> 23</button>
                 <button className="hover:bg-teal-200 hover:scale-110 hover:bg-opacity-50 hover:shadow-md text-gray-500 font-semibold flex gap-1 dark:text-gray-400 items-center"><FaRegComment /> 4 </button>
                 <button className="hover:bg-teal-200 hover:scale-110 hover:bg-opacity-50 hover:shadow-md text-gray-500 font-semibold flex gap-1 dark:text-gray-400 items-center"><FaRegShareFromSquare /> Repost</button>
             </div>
             <div className="flex mt-4 gap-3">
-                <div>
-                    <Avatar url={pfp} />
-                </div>
+                    <Link href={"/profile/"+user.id}>
+                        <span className="cursor-pointer">
+                            <Avatar url={user?.picture} big={false} />
+                        </span>
+                    </Link>
                 <div className="grow rounded-full relative">
                     <textarea className="border dark:border-gray-700 block p-3 outline-none dark:bg-dark overflow-hidden px-4 h-12 rounded-full w-full" placeholder="Comment..."></textarea>
                     <button className="absolute top-3 right-4 text-2xl"><IoImageOutline /></button>
