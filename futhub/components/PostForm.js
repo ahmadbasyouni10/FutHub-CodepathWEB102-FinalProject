@@ -82,7 +82,7 @@ const PostForm = ({onPost}) => {
         <Card Padding={true}>
             <div className="flex items-center gap-3">
                 <div>
-                    <Link href={"/profile/" + session.user.id}>
+                    <Link href={"/profile/" + session.user.id + '/posts'}>
                         <span className="cursor-pointer">
                             <Avatar url={pfp} big={false} />
                         </span>
