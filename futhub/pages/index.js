@@ -5,15 +5,11 @@ import { supabase } from "../client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Search from "@/components/Search";
-import Sidebar from "@/components/Sidebar";
-
-
 
 export default function Home() {
     const [session, setSession] = useState(null);
     const [posts, setPosts] = useState([]);
     const router = useRouter();
-    <Sidebar session={session}/>
 
     useEffect(() => {
       fetchPosts();
@@ -26,11 +22,20 @@ export default function Home() {
     if (!session) {
       router.push('/login');
     }
-    const { data: posts, error } = await supabase.from('posts').select('id, postcontent, photos, creator, created_at, users(id, picture, name)').order('created_at', {ascending: false});
+    const { data: posts, error } = await supabase.from('posts').select('id, postcontent, photos, creator, created_at, users(id, picture, name)').is('parent', null).order('created_at', {ascending: false});
     if (error) {
       console.error('Error fetching posts:', error);
     } else if (posts.length > 0) {
-      setPosts(posts);
+      const postsWithUpvotes = await Promise.all(posts.map(async (post) => {
+        const { data: upvotes, error } = await supabase.from('upvotes').select('userid').eq('postid', post.id);
+        if (error) {
+          console.error('Error fetching upvotes:', error);
+        }
+        return {...post, upvotes:upvotes? upvotes.length : 0};
+      }))
+      const sortedPosts = postsWithUpvotes.sort((a, b) => b.upvotes - a.upvotes);
+      setPosts(sortedPosts);
+      fetchPosts();
     }
   };
       
