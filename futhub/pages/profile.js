@@ -12,14 +12,19 @@ import { supabase } from "../client";
 import { set } from 'date-fns';
 import { MdOutlineModeEdit } from "react-icons/md";
 import { ClipLoader } from 'react-spinners';
-
-
+import About from '@/components/About';
 
 
 const ProfilePage = () => {
+    const [updatedAbout, setUpdatedAbout] = useState('');
+    const [editing, setEditing] = useState(false);
+    const [updatedName, setUpdatedName] = useState('');
+    const [updatedLocation, setUpdatedLocation] = useState('');
     const [isProcessing, setProcessing] = useState(false);
+    const [userPosts, setUserPosts] = useState([]);
     const [profile, setProfile] = useState(null);
     const router = useRouter();
+    console.log({router})
     const userID = router?.query.profile? router.query.profile[0] : null;
     const [session, setSession] = useState(null);
     const {asPath:currentpath} = router;
@@ -59,6 +64,24 @@ const ProfilePage = () => {
         };
         fetchSession();
     }, []);
+
+    useEffect (() => {
+        const fetchPosts = async () => {
+            setProcessing(true);
+            const { data: posts, error } = await supabase.from('posts').select('id, postcontent, photos, creator, created_at, users(id,picture,name)').eq('creator', userID).order('created_at', {ascending: false});
+            setProcessing(false);
+            if (error) {
+                console.error('Error fetching posts:', error);
+            } else if (posts.length > 0) {
+                setUserPosts(posts);
+            }
+        }; 
+        if (isPosts) {
+            fetchPosts();
+        }
+    }, [isPosts, userID]);
+
+
 
     const isMyProfile = session?.user?.id === userID;
 
@@ -106,6 +129,33 @@ const ProfilePage = () => {
         setProcessing(false);
     }
 
+    const handleEditProfile = () => {
+        setEditing(true);
+    }
+
+    const handleUpdateName = (e) => {
+        setUpdatedName(e.target.value);
+    }
+
+    const handleUpdateLocation = (e) => {
+        setUpdatedLocation(e.target.value);
+    }
+
+    const handleSavingProfile = () => {
+        supabase.from('users').update({name: updatedName, location: updatedLocation}).eq('id', session.user.id).then((result) => {
+            if (result.error) {
+                console.error('Error updating user:', result.error);
+            } else {
+                setProfile({...profile, name: updatedName, location: updatedLocation});
+                setEditing(false);
+            }
+        })
+    }
+
+    const handleCancel = () => {
+        setEditing(false);
+    }
+
     return (
         <Layout>
             <Card Padding={false}>
@@ -134,43 +184,63 @@ const ProfilePage = () => {
                     <div className='p-4'>
                         <div>
                             <div>
+                            <div className='flex'>
                             <h1 className=" ml-20 text-3xl font-bold">
-                                {profile?.name}
+                                {!editing && profile?.name}
+                                {editing && <input className="text-black py-1 px-2 w-full rounded-md border border-black text-md" type='text' onChange={handleUpdateName} placeholder="Type your name..." value={updatedName} />}
                             </h1>
+                            {isMyProfile && !editing && (
+                                <button onClick={handleEditProfile} className='bg-teal-500 hover:bg-teal-600 text-white text-sm flex items-center dark:text-black gap-1 rounded-full py-1 px-4 hover:cursor-pointer absolute right-3'>Edit Profile</button>
+                            )}
+                            {isMyProfile && editing && (
+                            <div className='ml-40 flex gap-1 item-center'>
+                                <button onClick={handleSavingProfile} className='bg-teal-500 mb-2 hover:bg-teal-600 text-white text-sm flex items-center dark:text-black gap-1 rounded-full py-1 px-4 hover:cursor-pointer'>Save</button>
+                                <button onClick={handleCancel} className='bg-teal-500 mb-2 hover:bg-teal-600 text-white text-sm flex items-center dark:text-black gap-1 rounded-full py-1 px-4 hover:cursor-pointer'>Cancel</button>
+                            </div>
+                            )}
+                            </div>
                             {isMyProfile && (
                                  <label className='bg-teal-500 hover:bg-teal-600 text-white text-sm flex items-center dark:text-black gap-1 rounded-full py-1 px-4 absolute hover:cursor-pointer top-44 right-4'><MdOutlineModeEdit  />Banner
                                     <input className="hidden" type='file' onChange={handleBannerUpdate} />
                                 </label>
                                 )}
                             </div>
-                            <div className='text-gray-400 leading-4 ml-20'>
+                            {!editing && (
+                                <div className='text-gray-400 leading-4 ml-20'>
                                 {profile?.location}
-                            </div>
+                                </div>
+                                )}
+                            {isMyProfile && editing && (
+                                <input className="text-black mt-2 w-30 py-1 px-2 rounded-md border border-black text-md ml-20" type='text' onChange={handleUpdateLocation} placeholder="Type your location..." value={updatedLocation} />
+                                )}
+                            
+
                             <div className='flex mt-8'>
-                                <Link href='/profile/posts' className={`${isPosts ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1 `}><IoDocumentTextOutline /> Posts</Link>
-                                <Link href='/profile/about' className={`${isAbout ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1`}><TbFriends /> About</Link>
-                                <Link href='/profile/friends' className={`${isFriends ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1`}><IoMdInformationCircleOutline /> Friends</Link>
+                                <Link href={`/profile/${userID}/posts`} className={`${isPosts ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1 `}><IoDocumentTextOutline /> Posts</Link>
+                                <Link href={`/profile/${userID}/about`} className={`${isAbout ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1`}><TbFriends /> About</Link>
+                                <Link href={`/profile/${userID}/friends`} className={`${isFriends ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1`}><IoMdInformationCircleOutline /> Friends</Link>
                             </div>
                         </div>
                     </div>
                     
                 </div>
             </Card>
-            {isPosts && (
-                <div>
-                    
+            {isPosts && userPosts.map((
+                post, index) => (
+                    <PostCard key={post.created_at} {...post}/>
+                ))}
+            {isPosts && userPosts.length > 0 && isProcessing && (
+                <div className="mt-2">
+                    <ClipLoader color='#009688' speedMultiplier={1} loading={isProcessing} size={30} />
                 </div>
-                )}
+            )}
+             {isPosts && userPosts.length === 0 && !isProcessing &&(
+                <Card Padding={true}>
+                    <h2 className='text-3xl mb-2'>No posts yet</h2>
+            </Card>
+            )}
             {isAbout && (
-                <div>
-                    <Card Padding={true}>
-                        <h2 className='text-3xl mb-2'>About Me</h2>
-                        <p className='text-sm mb-2'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptate.Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptate.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptate.Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptate.</p>
-                        <p className='text-sm mb-2'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptate. 
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptate.</p>
-                    </Card>
-                </div>)}
+                <About />)}
             {isFriends && (
                 <div>
                     <Card Padding={true}>
