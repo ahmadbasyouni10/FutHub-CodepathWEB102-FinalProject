@@ -24,7 +24,6 @@ const ProfilePage = () => {
     const [userPosts, setUserPosts] = useState([]);
     const [profile, setProfile] = useState(null);
     const router = useRouter();
-    console.log({router})
     const userID = router?.query.profile? router.query.profile[0] : null;
     const [session, setSession] = useState(null);
     const {asPath:currentpath} = router;
@@ -69,7 +68,6 @@ const ProfilePage = () => {
         const fetchPosts = async () => {
             setProcessing(true);
             const { data: posts, error } = await supabase.from('posts').select('id, postcontent, photos, creator, created_at, users(id,picture,name)').eq('creator', userID).order('created_at', {ascending: false});
-            setProcessing(false);
             if (error) {
                 console.error('Error fetching posts:', error);
             } else if (posts.length > 0) {
@@ -78,8 +76,9 @@ const ProfilePage = () => {
         }; 
         if (isPosts) {
             fetchPosts();
+            setProcessing(false);
         }
-    }, [isPosts, userID]);
+    }, [userPosts, userID]);
 
 
 
@@ -218,7 +217,6 @@ const ProfilePage = () => {
                             <div className='flex mt-8'>
                                 <Link href={`/profile/${userID}/posts`} className={`${isPosts ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1 `}><IoDocumentTextOutline /> Posts</Link>
                                 <Link href={`/profile/${userID}/about`} className={`${isAbout ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1`}><TbFriends /> About</Link>
-                                <Link href={`/profile/${userID}/friends`} className={`${isFriends ? activeItemStyles : 'hover:bg-teal-200'} items-center flex mt-2 px-3 rounded gap-1`}><IoMdInformationCircleOutline /> Friends</Link>
                             </div>
                         </div>
                     </div>
