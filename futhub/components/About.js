@@ -71,7 +71,7 @@ const About = () => {
             <Card Padding={true}>
                 <div>
                 <h2 className="text-3xl mb-2">
-                    {!editing && profile?.about}
+                    {!loading && profile?.about ? profile.about : (!editing ? 'No about section yet' : '')}
                     {editing && <textarea className="text-black h-20 py-1 px-2 w-full rounded-md border border-black text-sm" type='text' onChange={handleUpdateAbout} placeholder="Tell people about yourself..." value={updatedAbout} />}
                     {loading && <ClipLoader color={'#000'} loading={loading} size={20} />}
                 </h2>
