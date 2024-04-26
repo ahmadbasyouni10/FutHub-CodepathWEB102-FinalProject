@@ -1,6 +1,6 @@
 ### Built With
 
-[![Next.js](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Nextjs-logo.svg/800px-Nextjs-logo.svg.png)](Next-url)
+* [![Next][Next.js]][Next-url]
 [![React.js](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/800px-React-icon.svg.png)](React-url)
 [![Supabase](supabase-logo.png)](Supabase-url)
 [![Tailwind CSS](tailwindcss-logo.png)](Tailwind-url)
