@@ -47,18 +47,10 @@ To get a local copy up and running follow these simple example steps.
 <img width="587" alt="Screenshot 2024-04-26 at 10 12 36 AM" src="https://github.com/ahmadbasyouni10/FutHub/assets/120362910/0dfd8499-5e28-472a-a094-c057aa720fdc">
 <img width="587" alt="Screenshot 2024-04-26 at 10 13 02 AM" src="https://github.com/ahmadbasyouni10/FutHub/assets/120362910/d44a9036-d5ab-43c2-a891-b7f6c473ff91">
 
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- CONTRIBUTING -->
@@ -71,10 +63,6 @@ If you have a suggestion that would make this better, please fork the repo and c
 3. Commit your Changes
 4. Push to the Branch
 5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- LICENSE -->
 ## License
