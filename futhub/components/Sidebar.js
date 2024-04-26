@@ -35,7 +35,7 @@ const Sidebar = () => {
               }
         };
         fetchSession();
-    }, []);
+    }, [router, supabase, setSession]);
 
 
     return(

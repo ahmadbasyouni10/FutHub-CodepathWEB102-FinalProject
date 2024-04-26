@@ -162,12 +162,12 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
             }
         };
         fetchSession();
-    }, []);
+    }, [router, supabase]);
 
     useEffect(() => {
         fetchUpvotes();
     }, []);
-
+    
     const fetchUpvotes = async () => {
         supabase.from('upvotes').select().eq('postid', id).then((result) => {
             if (result.error) {
@@ -289,14 +289,14 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                 {media?.length > 1 ? (
                 <div className="flex gap-4">
                         {media.map((photo, index) => (
-                            <div className="rounded-md overflow-hidden">
-                                <img key={index} src={photo} alt="Post" className="w-full h-96 object-cover" />
+                            <div key={index} className="rounded-md overflow-hidden">
+                                <img key={index} src={photo} alt="Postimage" className="w-full h-96 object-cover" />
                             </div>
                         ))}
                 </div>
                 ): (
                     <div className="rounded-md overflow-hidden">
-                        <img className="w-full object-cover" src={photos?.[0]} />
+                        <img src={photos?.[0]} className="w-full object-cover" alt={photos?.[0]} />
                     </div>
                 )}
             </div>
@@ -327,8 +327,8 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                     {media.length > 0 && (
                     <div className="flex gap-1 mt-2 mb-2 border border-gray-300 p-2">
                         {media.map((url, index) => (
-                        <div className="relative">
-                        <img src={url} alt="" className="w-10 h-10 rounded-md" />
+                        <div key={index} className="relative">
+                        <img src={url} alt="media" className="w-10 h-10 rounded-md" />
                         <button className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-3 h-3 text-xs flex items-center justify-center" onClick={() => {
                             const newMedia = [...media];
                             newMedia.splice(index, 1);
@@ -364,7 +364,7 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                     </div>
                     <p className="text-sm">{comment.postcontent}</p>
                     {comment.photos && comment.photos.map((url, index) => (
-                        <img key={index} src={url} alt="" className="w-20 h-20 object-cover rounded-md" />
+                        <img key={index} src={url} alt="comment image" className="w-20 h-20 object-cover rounded-md" />
                     ))}
                 </div>
             </div>

@@ -46,7 +46,7 @@ const ProfilePage = () => {
         if (userID) {
             fetchProfile();
         }
-    }, [userID]);
+    }, [userID, supabase, setProfile]);
 
     useEffect(() => {
         const fetchSession = async () => {
@@ -62,7 +62,7 @@ const ProfilePage = () => {
             }
         };
         fetchSession();
-    }, []);
+    }, [router, supabase, setSession]);
 
     useEffect (() => {
         const fetchPosts = async () => {
@@ -78,7 +78,7 @@ const ProfilePage = () => {
             fetchPosts();
             setProcessing(false);
         }
-    }, [userPosts, userID]);
+    }, [userPosts, userID, supabase, setUserPosts, setProcessing, isPosts]);
 
 
 

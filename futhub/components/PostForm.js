@@ -43,7 +43,7 @@ const PostForm = ({onPost}) => {
             }
         };
         fetchSession();
-    }, []);
+    }, [router, supabase]);
 
     const createPost = async () => {
         supabase.from('posts').insert({
@@ -98,8 +98,8 @@ const PostForm = ({onPost}) => {
             {media.length > 0 && (
     <div className="flex gap-1 max-w-30">
         {media.map((url, index) => (
-            <div className="relative mt-2">
-                <img src={url} alt="" className="mt-2 rounded-md w-auto h-16" />
+            <div key={index} className="relative mt-2">
+                <img src={url} alt="media" className="mt-2 rounded-md w-auto h-16" />
                 <button 
                     className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center" 
                     onClick={() => {

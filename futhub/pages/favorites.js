@@ -24,7 +24,7 @@ export default function Saved() {
             }
         };
         fetchSession();
-    }, []);
+    }, [router, supabase, setSession]);
     console.log(session?.user?.id)
 
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function Saved() {
             })
         })
                 
-        }, [session]);
+        }, [session, supabase, setPosts]);
     
     console.log(posts);
 

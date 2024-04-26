@@ -21,7 +21,7 @@ const Recommended = () => {
           }}
         )};
       fetchUsers();
-      }, []);
+      }, [supabase, setRandomUsers]);
 
       return (
         <Card Padding={true}>

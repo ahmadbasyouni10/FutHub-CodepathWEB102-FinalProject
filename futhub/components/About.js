@@ -45,7 +45,7 @@ const About = () => {
             }
         };
         fetchSession();
-    }, []);
+    }, [router, supabase]);
 
     const isMyProfile = session?.user?.id === userID;
 
