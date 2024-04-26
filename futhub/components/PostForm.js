@@ -116,13 +116,7 @@ const PostForm = ({onPost}) => {
 )}
 
             <div className="flex items-center mt-3 justify-between">
-                    <div className="flex items-center gap-3">
-                <ToolTip content="Person">
-                    <button className="text-gray-500 fontpx-1 dark:text-gray-400 flex gap-1 text-2xl items-center"><IoPersonOutline /></button>
-                </ToolTip>
-                <ToolTip content="Location">
-                    <button className="text-gray-500 px-3 dark:text-gray-400 text-2xl flex items-center"><IoLocationOutline /></button>
-                </ToolTip>
+                    <div className="flex ml-4 items-center gap-3">
                 <ToolTip content="Media">
                     <label htmlFor="media" className="text-gray-500 dark:text-gray-400 text-2xl cursor-pointer"><MdPhotoLibrary /></label>
                     <input type="file" id="media" className="hidden" multiple onChange={handleMedia} />
