@@ -1,6 +1,5 @@
 ### Documentation
-![Supabase](https://camo.githubusercontent.com/39d8cf29263594898012e20b654c95d4337cca642e48574366a993c6d0f8a742/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f72656163742e737667)
-Supabase upgraded v2 docs - https://supabase.com/docs/reference/javascript/installing
+1. Supabase upgraded v2 docs - https://supabase.com/docs/reference/javascript/installing
 2. NextJS updated docs - https://nextjs.org/docs
 3. Tailwind docs - https://v2.tailwindcss.com/docs/utility-first
 
