@@ -1,7 +1,6 @@
 ### Documentation
 1. NextJS updated docs - https://nextjs.org/docs 
 2. Supabase upgraded v2 docs - https://supabase.com/docs/reference/javascript/installing
-3. NextJS updated docs - https://nextjs.org/docs
 4. Tailwind docs - https://v2.tailwindcss.com/docs/utility-first
 
 <!-- GETTING STARTED -->
