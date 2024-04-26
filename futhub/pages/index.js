@@ -5,17 +5,33 @@ import { supabase } from "../client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Search from "@/components/Search";
+import { set } from "date-fns";
+import { ClipLoader } from "react-spinners";
 
 export default function Home() {
+    const [loading, setLoading] = useState(true);
     const [session, setSession] = useState(null);
     const [posts, setPosts] = useState([]);
     const router = useRouter();
+    const [search, setSearch] = useState('');
+
+    const handleSearch = (term) => {
+      setSearch(term);
+    
+    }
+
+    const displayedPosts = search
+        ? posts.filter(post =>
+            post.postcontent.toLowerCase().includes(search.toLowerCase())
+        )
+        : posts;
 
     useEffect(() => {
       fetchPosts();
   }, []);
 
   const fetchPosts = async () => {
+    setLoading(true);
     const {data: { session },
     } = await supabase.auth.getSession()
     setSession(session);
@@ -36,6 +52,7 @@ export default function Home() {
       const sortedPosts = postsWithUpvotes.sort((a, b) => b.upvotes - a.upvotes);
       setPosts(sortedPosts);
       fetchPosts();
+      setLoading(false);
     }
   };
       
@@ -43,9 +60,10 @@ export default function Home() {
     return (
       <Layout session={session}>
         <PostForm onPost={fetchPosts} />
-        <Search />
-        {posts.map(post => (
-          <PostCard key={post.created_at} {...post} />
+        <Search onSearch={handleSearch} />
+        {loading ? <ClipLoader color={'#000'} loading={loading} size={20} /> : 
+          displayedPosts.map(post => (
+            <PostCard key={post.created_at} {...post} />
         ))}
       </Layout>
     );
