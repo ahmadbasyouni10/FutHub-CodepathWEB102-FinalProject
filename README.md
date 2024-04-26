@@ -1,14 +1,3 @@
-### Built With
-
-* [![Next][Next.js]][Next-url]
-[![React.js](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/800px-React-icon.svg.png)](React-url)
-[![Supabase](supabase-logo.png)](Supabase-url)
-[![Tailwind CSS](tailwindcss-logo.png)](Tailwind-url)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
