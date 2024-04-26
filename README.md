@@ -1,3 +1,8 @@
+### Documentation
+1. Supabase upgraded v2 docs - https://supabase.com/docs/reference/javascript/installing
+2. NextJS updated docs - https://nextjs.org/docs
+3. Tailwind docs - https://v2.tailwindcss.com/docs/utility-first
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -5,7 +10,6 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
 * yarn
   ```sh
   npm install --global yarn
@@ -13,19 +17,37 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/ahmadbasyouni10/FutHub
    ```
-3. Install NPM packages
+2. Create Next App
    ```sh
-   npm install
+   yarn create next-app .
    ```
-4. Enter your API in `config.js`
+3. Setup Tailwind
+   ```sh
+   yarn add tailwindcss postcss autoprefixer
+   npx tailwindcss init -p
+   ```
+4. Add supabase
+   ```sh
+   yarn add @supabase/supabase-js
+   ```
+  
+5. Add your own supabase key and url `.env`
    ```js
-   const API_KEY = 'ENTER YOUR API';
+   NEXT_PUBLIC_API_KEY = "YOUR API KEY";
+   NEXT_PUBLIC_supabaseURL = "YOUR API URL
    ```
+
+6. Create tables in supabase with following foreign relations and create insert, update, and delete row policies
+
+<img width="587" alt="Screenshot 2024-04-26 at 10 11 21 AM" src="https://github.com/ahmadbasyouni10/FutHub/assets/120362910/9c43ec45-301a-4889-8215-8c778530a621">
+<img width="587" alt="Screenshot 2024-04-26 at 10 12 36 AM" src="https://github.com/ahmadbasyouni10/FutHub/assets/120362910/0dfd8499-5e28-472a-a094-c057aa720fdc">
+<img width="587" alt="Screenshot 2024-04-26 at 10 13 02 AM" src="https://github.com/ahmadbasyouni10/FutHub/assets/120362910/d44a9036-d5ab-43c2-a891-b7f6c473ff91">
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -35,8 +57,6 @@ This is an example of how to list things you need to use the software and how to
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
