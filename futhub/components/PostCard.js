@@ -15,9 +15,13 @@ import { formatDistanceToNow, set } from 'date-fns';
 import { useEffect } from "react";
 import { supabase } from "../client";
 import { useRouter } from "next/router";
+import { ClipLoader } from "react-spinners";
+import { FaHeart } from "react-icons/fa";
 
 
-const PostCard = ({postcontent, id, photos, created_at, users:user}) => {
+
+const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesPage}) => {
+    const [alreadyHearted, setAlreadyHearted] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [upVotes, setUpVotes] = useState([]);
@@ -25,14 +29,98 @@ const PostCard = ({postcontent, id, photos, created_at, users:user}) => {
     const [pfp, setPfp] = useState(null);
     const [commentContent, setCommentContent] = useState('');
     const [comments, setComments] = useState([]);
+    const [media, setMedia] = useState([]);
+    const [editing, setEditing] = useState(false);
+    const [editedContent, setEditedContent] = useState(postcontent);
+    const router = useRouter();
+    const [isPosts, setIsPosts] = useState(true);
+    const [userPosts, setUserPosts] = useState([]);
+    const [processing, setProcessing] = useState(false);
+    const userID = router?.query.profile? router.query.profile[0] : null;
+
+
+    useEffect (() => {
+        if (userID) {
+            fetchPosts()
+        }
+    }, [userID, isPosts]);
+
+    const fetchPosts = async () => {
+        if (!userID) {
+            console.error('No user ID specified.');
+            return;
+        }
+        setProcessing(true);
+        const { data: posts, error } = await supabase.from('posts').select('id, postcontent, photos, creator, created_at, users(id,picture,name)').eq('creator', userID).order('created_at', {ascending: false});
+        setProcessing(false);
+        if (error) {
+            console.error('Error fetching posts:', error);
+        } else if (posts.length > 0) {
+            setUserPosts(posts);
+        }
+    }; 
+    
+    const handleEdit = async () => {
+        setEditing(true);
+        setShowDropdown(false);
+    }
+
+    const handleDelete = async () => {
+        const { data, error } = await supabase.from('upvotes').delete().eq('postid', id);
+
+        if (error) {
+            console.error('Error deleting upvotes:', error);
+        }
+        else
+        {
+            const { data, error } = await supabase.from('posts').delete().eq('id', id)
+            if (error) {
+                console.error('Error deleting post:', error);
+            }
+            else
+            {
+                setShowDropdown(false);
+                fetchPosts(); 
+            }  
+        }
+    }
+
+        
+
+    const handleSave = async () => {
+    if (!id) {
+        console.error('No id specified for post.');
+        return;
+    }
+
+    const { data, error } = await supabase
+        .from('posts')
+        .update({ postcontent: editedContent })
+        .eq('id',id);
+
+    if (error) {
+        console.error('Error updating post:', error);
+    } else if (data && data.length === 0) {
+        console.error('No post was updated. Check the post ID.');
+    } else {
+        setEditing(false);
+    }}
+
 
     const handleDropdown = () => {
         setShowDropdown(!showDropdown);
     }
 
-    const timeAgo = formatDistanceToNow(new Date(created_at), {addSuffix: true});
+    const timeAgo = formatDistanceToNow(new Date(created_at || Date.now()), {addSuffix: true});
 
-    const isUpVoted = !!upVotes.find((upvote) => upvote.userid === session.user.id);
+    const isUpVoted = !!upVotes?.find((upvote) => upvote.userid === session.user.id);
+
+    const isMyProfile = session?.user.id === user?.id;
+
+  
+
+
+
 
     const toggleupvotePost = () => {
         if (isUpVoted) {
@@ -107,10 +195,11 @@ const PostCard = ({postcontent, id, photos, created_at, users:user}) => {
         supabase.from('posts').insert({
             postcontent: commentContent,
             creator: session.user.id,
+            photos: media,
             parent: id
         }).then((result) => {
-            console.log(result);
             setCommentContent('');
+            setMedia([]);
             fetchComments();
         })
     }
@@ -129,14 +218,31 @@ const PostCard = ({postcontent, id, photos, created_at, users:user}) => {
                 setIsProcessing(false)
                 ;
             }
+            e.target.value = null;
         };
+
     }
+
+    const handleFavorite = async () => {
+        try {
+            if (alreadyHearted) {
+                await supabase.from('reposts').delete().eq('postid', id).eq('userid', session.user.id);
+            } else {
+                await supabase.from('reposts').insert({ postid: id, userid: session.user.id });
+            }
+            setAlreadyHearted(!alreadyHearted);
+            setShowDropdown(false);
+        } catch (error) {
+            console.error('Error toggling favorite status:', error);
+        }
+    }
+    
 
     return (
         <Card Padding={true}>
             <div className="flex gap-3">
                 <div className="cursor-pointer">
-                    <Link href={"/profile/"+user.id+'/posts'}>
+                    <Link href={"/profile/"+user?.id+'/posts'}>
                         <span className="cursor-pointer">
                             <Avatar url={user?.picture} big={false} />
                         </span>
@@ -144,7 +250,7 @@ const PostCard = ({postcontent, id, photos, created_at, users:user}) => {
                 </div>
                 <div className="grow">
                     <h2 className="">
-                        <Link href={"/profile/"+user.id+'/posts'}>
+                        <Link href={"/profile/"+user?.id+'/posts'}>
                             <span className="cursor-pointer hover:underline font-semibold mr-1">{user?.name}</span>
                         </Link>
                         shared a <a className="text-teal-500">post</a>
@@ -152,23 +258,37 @@ const PostCard = ({postcontent, id, photos, created_at, users:user}) => {
                     </h2>
                 </div>
                 <div>
-                    <button className="text-gray-400 text-2xl" onClick={handleDropdown}><IoIosMore /></button>
-                    <div className="relative">
-                        {showDropdown && (
-                        <div className="absolute -right-7 bg-white dark:bg-dark p-3 rounded-sm border dark:border-gray-700 border-gray-100 w-40">
-                            <a href="" className="items-center gap-3 flex py-2"><CiEdit /> Edit</a>
-                            <a href="" className="items-center gap-3 flex py-2"><MdDeleteOutline /> Delete</a>
-                            <a href="" className="items-center gap-3 flex py-2"><MdOutlineReport /> Report</a>
+                    {isMyProfile && ( 
+                        <div>
+                        {!isFavoritesPage && (
+                        <button className="text-gray-400 text-2xl" onClick={handleDropdown}><IoIosMore /></button>
+                        )}
+                        <div className="relative">
+                            {!isFavoritesPage && showDropdown && (
+                            <div className="absolute -right-7 bg-white dark:bg-dark p-3 rounded-sm border dark:border-gray-700 border-gray-100 w-40 z-50">
+                                <button onClick={handleEdit} className="items-center gap-3 flex py-2"><CiEdit /> Edit</button>
+                                <button onClick={handleDelete} className="items-center gap-3 flex py-2"><MdDeleteOutline /> Delete</button>
+                                <button onClick={handleFavorite} className="items-center gap-3 flex py-2"><FaHeart /> Favorite</button>
+                            </div>
+                        )}
                         </div>
+                        </div>  
                     )}
-                    </div>
                 </div>
             </div>
             <div>
-                <p className="my-3 text-sm">{postcontent}</p>
-                {photos?.length > 1 ? (
+                {editing ? (
+                    <div className="flex gap-3 mt-2 mb-2">
+                        <input value={editedContent} onChange={(event) => setEditedContent(event.target.value)} className="w-full dark:bg-dark dark:text-white p-2 border border-gray-300 rounded-lg"></input>
+                        <button className="bg-teal-500 text-white px-4 py-2 rounded-lg" onClick={handleSave}>Save</button>
+                    </div>
+                ) : (
+                    <p className="my-3 text-sm">{postcontent}</p>
+                )
+                    }
+                {media?.length > 1 ? (
                 <div className="flex gap-4">
-                        {photos.map((photo, index) => (
+                        {media.map((photo, index) => (
                             <div className="rounded-md overflow-hidden">
                                 <img key={index} src={photo} alt="Post" className="w-full h-96 object-cover" />
                             </div>
@@ -176,11 +296,10 @@ const PostCard = ({postcontent, id, photos, created_at, users:user}) => {
                 </div>
                 ): (
                     <div className="rounded-md overflow-hidden">
-                        <img className="w-full object-cover" src={photos[0]}></img>
+                        <img className="w-full object-cover" src={photos?.[0]}></img>
                     </div>
                 )}
             </div>
-                
             <div className='flex gap-3 mt-2'>
                 <button className={`${isUpVoted ? "text-red-500" : "text-gray-500 dark:text-gray-400"} hover:scale-110 hover:bg-opacity-50 hover:shadow-md font-semibold flex gap-1 items-center`}
                 onClick={toggleupvotePost}>
@@ -189,7 +308,6 @@ const PostCard = ({postcontent, id, photos, created_at, users:user}) => {
                 <button className="hover:scale-110 hover:bg-opacity-50 hover:shadow-md text-gray-500 font-semibold flex gap-1 dark:text-gray-400 items-center"><FaRegComment /> 
                 {comments ? comments.length : 0}
                  </button>
-                <button className="hover:scale-110 hover:bg-opacity-50 hover:shadow-md text-gray-500 font-semibold flex gap-1 dark:text-gray-400 items-center"><FaRegShareFromSquare /> Repost</button>
             </div>
             <div className="flex mt-4 gap-3">
                     <Link href={"/profile/" + session?.user.id + '/posts'}>
@@ -201,30 +319,58 @@ const PostCard = ({postcontent, id, photos, created_at, users:user}) => {
                     <form onSubmit={handleCommenting}>
                         <input onChange={event => setCommentContent(event.target.value)} value={commentContent} className="border dark:border-gray-700 block p-3 outline-none dark:bg-dark overflow-hidden px-4 h-12 rounded-full w-full" placeholder="Comment..."></input>
                     </form>
+                    {isProcessing && (
+                            <div className="mt-2">
+                                <ClipLoader color='#009688' speedMultiplier={1} loading={isProcessing} size={30} />
+                            </div>
+                        )}
+                    {media.length > 0 && (
+                    <div className="flex gap-1 mt-2 mb-2 border border-gray-300 p-2">
+                        {media.map((url, index) => (
+                        <div className="relative">
+                        <img src={url} alt="" className="w-10 h-10 rounded-md" />
+                        <button className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-3 h-3 text-xs flex items-center justify-center" onClick={() => {
+                            const newMedia = [...media];
+                            newMedia.splice(index, 1);
+                            setMedia(newMedia);
+                        }}>
+                            x
+                        </button>
+                        </div>
+                        ))}
+                    </div>
+                    )}
+                    
                     <label htmlFor="media2"className="cursor-pointer absolute top-3 right-4 text-2xl"><IoImageOutline /></label>
                     <input type="file" id="media2" className="hidden" multiple onChange={handleMedia} />
                 </div>
             </div>
             <div>
-                {comments.length > 0 && comments.map((comment) => (
+                {comments?.length > 0 && comments.map((comment) => (
                     <div className="flex items-center gap-2 mt-2">
-                        <Avatar url={comment.users.picture} big={false} />
-                        <div className="bg-gray-200 dark:text-black p-2 px-4 rounded-3xl">
+                        <Link href={'/profile/'+comment?.users.id+'/posts'}>
+                            <Avatar url={comment.users.picture} big={false} />
+                        </Link>
+                        <div className="bg-gray-200 dark:text-white dark:bg-gray-600 p-2 px-4 rounded-3xl">
                         <div className="flex gap-2 items-center">
-                        <Link href={'/profile/'+comment.users.id}>
+                        <Link href={'/profile/'+comment?.users.id+'/posts'}>
                             <span className="hover:underline font-bold">
-                                {comment.users.name}<br />
+                                {comment?.users.name}<br />
                             </span>
                         </Link>
                             <div className="text-gray-500 text-sm dark:text-gray-400">{formatDistanceToNow(new Date(comment.created_at), {addSuffix: true})}</div>
                         </div>
                         <p className="text-sm">{comment.postcontent}</p>
+                        {comment.photos && comment.photos.map((url, index) => (
+                            <img key={index} src={url} alt="" className="w-20 h-20 object-cover rounded-md" />
+                        ))}
                         </div>
                     </div>
                 ))}
             </div>
         </Card>
     );
+
 }
 
 export default PostCard;
