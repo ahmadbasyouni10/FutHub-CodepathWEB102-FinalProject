@@ -27,8 +27,8 @@ const Recommended = () => {
         <Card Padding={true}>
                         <h2 className="text-2xl text-gray-400 font-bold">Who To follow</h2>
                         <div className='gap-3 mt-3'>
-                            {randomUsers.map(user => (
-                                <div className="gap-2 flex items-center py-2">
+                            {randomUsers.map((user,index)=> (
+                                <div key={index} className="gap-2 flex items-center py-2">
                                     <Link  className='flex items-center gap-2 py-2' href={"/profile/"+user?.id+'/posts'}>
                                     <Avatar url={user.picture} />
                                     <h3 className='font-bold text-center'>{user.name}</h3>

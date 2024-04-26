@@ -296,7 +296,7 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                 </div>
                 ): (
                     <div className="rounded-md overflow-hidden">
-                        <img className="w-full object-cover" src={photos?.[0]}></img>
+                        <img className="w-full object-cover" src={photos?.[0]} />
                     </div>
                 )}
             </div>
@@ -346,27 +346,29 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                 </div>
             </div>
             <div>
-                {comments?.length > 0 && comments.map((comment) => (
-                    <div className="flex items-center gap-2 mt-2">
-                        <Link href={'/profile/'+comment?.users.id+'/posts'}>
-                            <Avatar url={comment.users.picture} big={false} />
-                        </Link>
-                        <div className="bg-gray-200 dark:text-white dark:bg-gray-600 p-2 px-4 rounded-3xl">
+            {comments?.length > 0 && comments.map((comment, index) => (
+                <div key={index} className="flex items-center gap-2 mt-2">
+                    <Link href={'/profile/'+comment?.users.id+'/posts'}>
+                        <Avatar url={comment.users.picture} big={false} />
+                    </Link>
+                    <div className="bg-gray-200 dark:text-white dark:bg-gray-600 p-2 px-4 rounded-3xl">
                         <div className="flex gap-2 items-center">
-                        <Link href={'/profile/'+comment?.users.id+'/posts'}>
-                            <span className="hover:underline font-bold">
-                                {comment?.users.name}<br />
-                            </span>
-                        </Link>
-                            <div className="text-gray-500 text-sm dark:text-gray-400">{formatDistanceToNow(new Date(comment.created_at), {addSuffix: true})}</div>
-                        </div>
-                        <p className="text-sm">{comment.postcontent}</p>
-                        {comment.photos && comment.photos.map((url, index) => (
-                            <img key={index} src={url} alt="" className="w-20 h-20 object-cover rounded-md" />
-                        ))}
+                            <Link href={'/profile/'+comment?.users.id+'/posts'}>
+                                <span className="hover:underline font-bold">
+                                    {comment?.users.name}<br />
+                                </span>
+                            </Link>
+                        <div className="text-gray-500 text-sm dark:text-gray-400">
+                            {formatDistanceToNow(new Date(comment.created_at), {addSuffix: true})}
                         </div>
                     </div>
-                ))}
+                    <p className="text-sm">{comment.postcontent}</p>
+                    {comment.photos && comment.photos.map((url, index) => (
+                        <img key={index} src={url} alt="" className="w-20 h-20 object-cover rounded-md" />
+                    ))}
+                </div>
+            </div>
+        ))}
             </div>
         </Card>
     );
