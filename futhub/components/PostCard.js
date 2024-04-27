@@ -282,9 +282,9 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                     <p className="my-3 text-sm">{postcontent}</p>
                 )
                     }
-                {media?.length > 1 ? (
+                {photos?.length > 1 ? (
                 <div className="flex gap-4">
-                        {media.map((photo, index) => (
+                        {photos.map((photo, index) => (
                             <div key={index} className="rounded-md overflow-hidden">
                                 <img key={index} src={photo} alt="Postimage" className="w-full h-96 object-cover" />
                             </div>
