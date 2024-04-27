@@ -2,6 +2,10 @@
 
 This web app: Allows football users to socialize and interact with one another
 
+## Demo
+
+![demoo](https://github.com/ahmadbasyouni10/FutHub/assets/120362910/558ae38f-a26e-4860-9add-0d1e7a578de3)
+
 ### Documentation
 1. NextJS updated docs - https://nextjs.org/docs 
 2. Supabase upgraded v2 docs - https://supabase.com/docs/reference/javascript/installing
@@ -50,11 +54,6 @@ To get a local copy up and running follow these simple example steps.
 <img width="587" alt="Screenshot 2024-04-26 at 10 11 21 AM" src="https://github.com/ahmadbasyouni10/FutHub/assets/120362910/9c43ec45-301a-4889-8215-8c778530a621">
 <img width="587" alt="Screenshot 2024-04-26 at 10 12 36 AM" src="https://github.com/ahmadbasyouni10/FutHub/assets/120362910/0dfd8499-5e28-472a-a094-c057aa720fdc">
 <img width="587" alt="Screenshot 2024-04-26 at 10 13 02 AM" src="https://github.com/ahmadbasyouni10/FutHub/assets/120362910/d44a9036-d5ab-43c2-a891-b7f6c473ff91">
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-![demoo](https://github.com/ahmadbasyouni10/FutHub/assets/120362910/558ae38f-a26e-4860-9add-0d1e7a578de3)
 
 <!-- CONTRIBUTING -->
 ## Contributing
