@@ -12,7 +12,8 @@ const Login = () => {
     const router = useRouter();
     const handleLogin = async () => {
         const { error } = await supabase.auth.signInWithOAuth({
-            provider: 'google'
+            provider: 'google',
+            redirect_uri: 'https://fut-hub.vercel.app/auth/v1/callback'
         })
         if (error) console.log(error)
         else {
