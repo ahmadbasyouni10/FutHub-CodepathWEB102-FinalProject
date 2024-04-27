@@ -66,13 +66,6 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
     }
 
     const handleDelete = async () => {
-        const { data, error } = await supabase.from('upvotes').delete().eq('postid', id);
-
-        if (error) {
-            console.error('Error deleting upvotes:', error);
-        }
-        else
-        {
             const { data, error } = await supabase.from('posts').delete().eq('id', id)
             if (error) {
                 console.error('Error deleting post:', error);
@@ -83,7 +76,6 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                 fetchPosts(); 
             }  
         }
-    }
 
         
 
@@ -258,7 +250,7 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                     </h2>
                 </div>
                 <div>
-                    {isMyProfile && ( 
+                    {( 
                         <div>
                         {!isFavoritesPage && (
                         <button className="text-gray-400 text-2xl" onClick={handleDropdown}><IoIosMore /></button>
@@ -266,8 +258,12 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                         <div className="relative">
                             {!isFavoritesPage && showDropdown && (
                             <div className="absolute -right-7 bg-white dark:bg-dark p-3 rounded-sm border dark:border-gray-700 border-gray-100 w-40 z-50">
+                                {isMyProfile && (
+                                <div>
                                 <button onClick={handleEdit} className="items-center gap-3 flex py-2"><CiEdit /> Edit</button>
                                 <button onClick={handleDelete} className="items-center gap-3 flex py-2"><MdDeleteOutline /> Delete</button>
+                                </div>
+                                )}
                                 <button onClick={handleFavorite} className="items-center gap-3 flex py-2"><FaHeart /> Favorite</button>
                             </div>
                         )}
