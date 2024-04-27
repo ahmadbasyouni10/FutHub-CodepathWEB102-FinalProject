@@ -283,18 +283,18 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                 )
                     }
                 {photos?.length > 1 ? (
-                <div className="flex gap-4">
+                    <div className="flex gap-4">
                         {photos.map((photo, index) => (
                             <div key={index} className="rounded-md overflow-hidden">
-                                <img key={index} src={photo} alt="Postimage" className="w-full h-96 object-cover" />
+                                <img src={photo} alt="Postimage" className="w-full object-cover" />
                             </div>
                         ))}
-                </div>
-                ): (
-                    <div className="rounded-md overflow-hidden">
-                        <img src={photos?.[0]} className="w-full object-cover" alt={photos?.[0]} />
                     </div>
-                )}
+                ) : (
+                    <div className="rounded-md overflow-hidden">
+                        <img src={photos?.[0]} className="w-full h-full object-cover" alt={photos?.[0]} />
+                    </div>
+                    )}
             </div>
             <div className='flex gap-3 mt-2'>
                 <button className={`${isUpVoted ? "text-red-500" : "text-gray-500 dark:text-gray-400"} hover:scale-110 hover:bg-opacity-50 hover:shadow-md font-semibold flex gap-1 items-center`}
