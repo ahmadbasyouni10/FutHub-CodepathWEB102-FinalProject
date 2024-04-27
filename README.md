@@ -45,10 +45,6 @@ The following **additional** features are implemented:
 ![demoo](https://github.com/ahmadbasyouni10/FutHub/assets/120362910/558ae38f-a26e-4860-9add-0d1e7a578de3)
 
 
-## Notes
-
-Describe any challenges encountered while building the app.
-
 ## License
 
     Copyright [2024] [Ahmad Basyouni]
