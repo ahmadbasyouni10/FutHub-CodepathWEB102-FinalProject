@@ -35,9 +35,6 @@ export default function Home() {
     const {data: { session },
     } = await supabase.auth.getSession()
     setSession(session);
-    if (!session) {
-      router.push('/login');
-    }
     const { data: posts, error } = await supabase.from('posts').select('id, postcontent, photos, creator, created_at, users(id, picture, name)').is('parent', null).order('created_at', {ascending: false});
     if (error) {
       console.error('Error fetching posts:', error);
