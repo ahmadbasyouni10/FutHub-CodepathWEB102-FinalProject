@@ -4,15 +4,21 @@ import { FcGoogle } from "react-icons/fc";
 import { supabase } from "../client";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import ThemeToggle from "../components/ThemeToggle";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 
 const Login = () => {
+    const router = useRouter();
     const handleLogin = async () => {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google'
         })
         if (error) console.log(error)
+        else {
+            router.push('/')}
     }
+
 
     return (
         <Layout nonavigation={true}>

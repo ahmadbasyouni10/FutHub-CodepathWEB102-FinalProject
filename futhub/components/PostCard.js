@@ -105,7 +105,7 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
 
     const timeAgo = formatDistanceToNow(new Date(created_at || Date.now()), {addSuffix: true});
 
-    const isUpVoted = !!upVotes?.find((upvote) => upvote.userid === session.user.id);
+    const isUpVoted = !!upVotes?.find((upvote) => upvote.userid === session?.user?.id);
 
     const isMyProfile = session?.user.id === user?.id;
 
