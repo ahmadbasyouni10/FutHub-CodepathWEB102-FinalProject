@@ -13,7 +13,7 @@ const Login = () => {
     const handleLogin = async () => {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
-            redirect_uri: 'https://fut-hub.vercel.app/auth/v1/callback'
+            redirect_uri: 'https://snjljdedbivrztswigzr.supabase.co/auth/v1/callback'
         })
         if (error) console.log(error)
         else {
