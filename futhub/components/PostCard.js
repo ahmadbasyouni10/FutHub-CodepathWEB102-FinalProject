@@ -285,14 +285,14 @@ const PostCard = ({postcontent, id, photos, created_at, users:user, isFavoritesP
                 {photos?.length > 1 ? (
                     <div className="flex gap-4">
                         {photos.map((photo, index) => (
-                            <div key={index} className="flex-grow rounded-md overflow-hidden">
+                            <div key={index} className="flex-1 rounded-md overflow-hidden">
                                 <img src={photo} alt="Postimage" className="w-full h-full object-cover" />
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <div className="rounded-md overflow-hidden">
-                        <img src={photos?.[0]} className="w-full h-full object-cover" alt={photos?.[0]} />
+                    <div className="flex rounded-md overflow-hidden">
+                        <img src={photos?.[0]} className="object-cover" alt={photos?.[0]} />
                     </div>
                     )}
             </div>
